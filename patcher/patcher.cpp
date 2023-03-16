@@ -56,8 +56,7 @@ HDC& InitialPrep()
     txSetColor(TX_YELLOW);
 
     SUBTITLES(emperor, "HELLO");
-    SUBTITLES(emperor, "I AM THE MOTHERFUCKING");
-    SUBTITLES(emperor, "EMPEROR OF MANKIND");
+    SUBTITLES(emperor, "I AM THE MOTHERFUCKING EMPEROR");
     SUBTITLES(emperor, "AND NOW");
     SUBTITLES(emperor, "MY LOYAL MECHANICUS");
     SUBTITLES(emperor, "SHALL CRACK THIS CODE FOR YOU");
