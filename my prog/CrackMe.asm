@@ -14,21 +14,21 @@ locals @@
 ; Expects:	(none)
 ; Destroys:	...
 ;------------------------------------------------
-EXIT		macro
-			nop
-			mov ax, 4c00h
-			int 21h
-			nop
-			endm
+EXIT		    macro
+			    nop
+			    mov ax, 4c00h
+			    int 21h
+			    nop
+			    endm
 
 Start:
                 mov di, offset input                ; input string
-                push di
+                push di cx
                 call Gets
 
-                pop di
+                pop cx di
                 push di
-                add di, 254d
+                add di, 18d
                 mov byte ptr ah, [di]
                 cmp ah, 25h
                 pop di
@@ -37,6 +37,9 @@ Start:
                 mov si, offset Password
 
                 call StrCmp
+                jmp @@Cmp
+
+@@Cmp:
                 cmp ax, 0
                 jne @@Wrong
 
@@ -58,19 +61,30 @@ Start:
 ; Entry:	DI = ptr of the destination
 ; Exit:		DI = string
 ; Expects:	none
-; Destroys: AX DI
+; Destroys: AX DI CL
 ;------------------------------------------------
 
 Gets            proc
 
                 xor ax, ax
                 mov ah, 01h
+                mov cl, 20d
 
-@@Next:         cmp al, 0Dh
+@@Next:
+                cmp al, 0Dh
+                je @@Done
+                jmp @@Amogus
+
+input           db 18 dup (0), 25h
+
+@@Amogus:
+                inc ax
+                cmp cl, 00h
                 je @@Done
 
                 int 21h
                 stosb
+                dec cx
 
                 jmp @@Next
 @@Done:
@@ -133,7 +147,6 @@ StrCmp		proc
 
 .data
 
-input           db 254 dup (0), 25h
 Password        db 'Bebra$'
 Correct         db 'Access Granted$'
 Wrong           db 'Access Denied$'
